@@ -86,4 +86,35 @@ public class TicketDAO {
         }
         return false;
     }
+    
+    public boolean KnownVehicle(Ticket ticket) {
+    	if (ticket.getVehicleRegNumber()== null) {
+    		return false;
+    	}
+		Connection con = null;
+		try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_VEHICLE_TICKET);
+            ps.setString(1, ticket.getVehicleRegNumber());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+            int count = rs.getInt(1);
+            //mettre une condition sur le nombre de lignes
+            if (count>=2);
+                return true;
+
+            }else {
+            	return false;
+            	}
+            }
+		catch (Exception ex){
+            logger.error("Error checking vehicle ticket",ex);
+		
+			}
+        finally {
+            dataBaseConfig.closeConnection(con);
+        }
+		return false;
+    } 
+   
 }
